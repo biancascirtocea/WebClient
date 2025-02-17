@@ -1,0 +1,30 @@
+Scîrtocea Bianca - Ioana 321CB
+
+In rezolvarea temei, am pornit de la scheletul laboratorului 10.
+
+Pentru crearea JSON-ului am ales sa nu folosesc alte biblioteci de parsare, creandu-mi anumite functii specifice ce formateaza textul necesar sub forma de JSON.
+
+Fisierul client:
+
+Dupa declararea tuturor variabilelor necesare, intram intr-un loop infinit, din care poti iesi folosind comanda exit.
+
+La fiecare etapa, se va citi o noua comanda din terminal prin intermediul lui scanf.
+
+Dupa, vom verifica fiecare tip de comanda:
+  - register - dupa ce deschide conexiunea la server, se asigura ca bufferul de input este gol, ca dupa sa citeasca informatiile necesare. Acesta verifica daca username-ul si parola au spatii, pentru a oferi o eroare in caz afirmativ. Dupa, daca userul nu a mai fost folosit pana acum (adica in functie de raspunsul serverului) afisam Succes, astfel Eroare. In final, inchidem conexiunea si eliberam memoria punctual necesara in acel if.
+  - login - Initial verific daca sunt deja logat, daca nu comanda face lucruri asemantoare ca la register, cu diferenta ca daca informatiile citite sunt bune si raspunsul de la server e bun, vom primi si un cookie, pe care il extrag din raspuns. Acest cookie o sa il folosec la enter_library si la logout, pentru a demonstra ca sunt deja logat.
+  - logout - Verificam daca suntem deja logati. Daca da, deschidem conexiunea si trimitem o cerere de tip get. In functie, de raspunsul serverului afisam si mesajul de eroare sau succes. Dupa, se inchide conexiunea si se elibereaza memoria.
+  - enter_library - Aici am verificat initial daca sunt logat sau nu, daca nu sunt atunci se intoarce un mesaj de eroare. Daca sunt, atunci fac o cerere de tip get. Daca cookie ul nu este null (sunt logat) si raspunsul serverului este bun, atunci vom extrage tokenul din raspuns, pentru a-l folosi la operatiile folosite pentru carti. Altfel, returnam mesajul de eroare. In final, inchidem conexiunea deschisa la inceput aici si dupa eliberam memoria.
+  (La urmatoarele comenzi trebuie sa verificam initial daca avem acces la biblioteca)
+  - get_books - La fel ca celelalte, trimite o cerere de tip get, iar daca token-ul este corect primeste lista de carti ca raspuns.(cu id si titlul cartii)
+  - get_book - Aici se citeste id ul  si se trimite o cerere de tip get. Daca, id ul este un numar, iar cartea exista, atunci primim toate detaliile cartii respective.
+  - add_book - Aici, dupa ce deschidem conexiunea , ne asiguram ca bufferul de input este gol si dupa incepem sa citim toate informatiile necesare cartilor (asigurandu-ne ca acestea nu au \n la final - adica finalul de sir, pentru ca apoi sa le transformam pe toate intr-un format JSON). Verificam, daca formatul informatiilor citite de la tastatura este bun (ex: page countul este un numar). Daca, suntem logati vom trimite o cerere de tip post. In functie de raspunsul serverului vom afisa un mesaj de eroare sau de succes si vom elibera memoria .
+  - delete_book -  Dupa ce verificam daca avem acces la biblioteca, deschidem conexiunea si citim id ul, verificandu-l sa fie numar. Dupa, trimitem o cerere de tip delete, iar daca exista cartea o sterge. 
+  - exit - comanda ce face ca programul sa iasa din loop si sa ajunga la final sa elibereze memoria alocata. In final, se afiseaza mesajul specific, se inchide conexiunea si se elibereaza memoria.
+Pe langa toate acestea, am mai facut functii auxiliare pentru verificarea unui string daca este un numar (prin parcurgerea stringului si verificarea codului ascii a fiecarei parti a stringului), pentru crearea jsonului pentru reegister si pentru book (unde se foloseste functia strcpy si strcat pentru a concatena stringurile necesare) si pentru extragerea cookie-ului din raspunsul serverului si a tokenului (prin parcurgerea stringurilor in scopul eliminarii prefixului specific).
+
+Fisierul requests
+    Functiile de tip post si get au fost preluate din laborator, la care am adaugat mici moificari, precum introducerea tokenului. Functia noua de tip delete, a fost facuta la fel ca cea de tip get.
+
+Mentiuni:
+Tema a fost mult mai usoara fata de prima tema. A fost o tema care mi-a placut enorm de mult sa o fac si nici nu a durat foarte mult. 
